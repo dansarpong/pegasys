@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Pegasis - Custom Windows App Installer",
+  title: "Pegasys - Custom Windows App Installer",
   description: "Select your favorite apps and get a custom Windows installer powered by winget",
 };
 
