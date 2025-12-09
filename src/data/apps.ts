@@ -2,8 +2,8 @@ export interface AppDefinition {
     id: string;
     name: string;
     category: string;
-    wingetId?: string;
-    manualUrl?: string;
+    wingetId?: string; // For wingget packages
+    manualUrl?: string; // For manual installs
     website?: string;
 }
 
@@ -63,10 +63,12 @@ export const apps: AppDefinition[] = [
     { id: 'aomei', name: 'AOMEI Partition Assistant', category: 'Utilities', wingetId: 'AOMEI.PartitionAssistant', website: 'aomeitech.com/aomei-partition-assistant.html' },
     { id: 'ditto', name: 'Ditto', category: 'Utilities', wingetId: 'Ditto.Ditto', website: 'ditto-cp.sourceforge.io' },
 
-    // Manual Downloads
+    { id: 'icloud', name: 'iCloud', category: 'Utitlities', manualUrl: 'https://www.microsoft.com/store/apps/9PKTQ5699M62', website: 'icloud.com' },
+    
+    // Documents
     { id: 'pdfgear', name: 'PDFgear', category: 'Documents', manualUrl: 'https://www.pdfgear.com/download/', website: 'pdfgear.com' },
     { id: 'msoffice', name: 'Microsoft Office Suite', category: 'Documents', manualUrl: 'https://gravesoft.dev/office_c2r_links', website: 'microsoft365.com' },
-    { id: 'icloud', name: 'iCloud', category: 'Documents', manualUrl: 'https://www.microsoft.com/store/apps/9PKTQ5699M62', website: 'icloud.com' },
+    
 ];
 
 // Helper functions to separate apps by installation type

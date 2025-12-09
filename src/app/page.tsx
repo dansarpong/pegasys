@@ -1,11 +1,35 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { apps, categories, getWingetApps, getManualDownloadApps } from '@/data/apps';
 
 export default function Home() {
   const [selectedApps, setSelectedApps] = useState<Set<string>>(new Set());
   const [isGenerating, setIsGenerating] = useState(false);
+  const [showInfoModal, setShowInfoModal] = useState(false);
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+
+  // Initialize theme from localStorage or system preference
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') as 'dark' | 'light' | null;
+    if (savedTheme) {
+      setTheme(savedTheme);
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    } else {
+      // Check system preference
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const initialTheme = prefersDark ? 'dark' : 'light';
+      setTheme(initialTheme);
+      document.documentElement.setAttribute('data-theme', initialTheme);
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+  };
 
   const toggleApp = (appId: string) => {
     const newSelected = new Set(selectedApps);
@@ -48,7 +72,7 @@ export default function Home() {
 
       // Try to get filename from header
       const contentDisposition = response.headers.get('Content-Disposition');
-      let filename = 'PegasisInstaller.bat';
+      let filename = 'PegasysInstaller.bat';
       if (contentDisposition) {
         const filenameMatch = contentDisposition.match(/filename="?([^"]+)"?/);
         if (filenameMatch && filenameMatch[1]) {
@@ -85,9 +109,41 @@ export default function Home() {
 
   return (
     <main className="container">
+      {/* Floating Action Buttons */}
+      <div className="floating-actions">
+        <button className="info-btn" onClick={() => setShowInfoModal(true)} aria-label="About">
+          i
+        </button>
+        <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
+          {theme === 'dark' ? '☀️' : '🌙'}
+        </button>
+        <a
+          href="https://www.buymeacoffee.com/dansarpong"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="pizza-btn"
+        >
+        🍕
+        </a>
+      </div>
+
       <div className="header">
         <h1>Pegasys</h1>
-        <p>Select your apps and get a custom installer.</p>
+        <p>Your custom Windows app installer generator. Select your favorite apps and get a ready-to-run installer script.</p>
+      </div>
+
+      {/* Instructions Section */}
+      <div className="instructions">
+        <div className="instructions-title">📋 How to Use</div>
+        <ol className="instructions-list">
+          <li>Browse the categories below and select your desired apps by checking the boxes</li>
+          <li>Click "Get Your Installer" to download a custom .bat installer file</li>
+          <li>Run the downloaded installer on your Windows machine (requires winget)</li>
+          <li>For apps in the "Manual Downloads" section, click to visit their download sites</li>
+        </ol>
+      </div>
+
+      <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
         <button
           className="select-all-btn"
           onClick={isAllSelected() ? unselectAll : selectAll}
@@ -132,7 +188,7 @@ export default function Home() {
         <>
           <div className="section-header">Manual Downloads</div>
           <p className="manual-description">
-            These apps require manual download from their official websites.
+            These apps require manual download.
           </p>
           <div className="category-grid">
             {Array.from(new Set(manualApps.map(app => app.category))).map((category) => (
@@ -181,6 +237,28 @@ export default function Home() {
           </button>
         </div>
       </div>
+
+      {/* Info Modal */}
+      {showInfoModal && (
+        <div className="modal-overlay" onClick={() => setShowInfoModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <div className="modal-title">About Pegasys</div>
+              <button className="modal-close" onClick={() => setShowInfoModal(false)}>
+                ×
+              </button>
+            </div>
+            <div className="modal-body">
+              <p>
+                This project was made for personal use to simplify app installations on fresh Windows setups (x64).
+              </p>
+              <p style={{ marginTop: '1rem' }}>
+                Feel free to fork, modify, and use it however you like!
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
