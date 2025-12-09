@@ -1,4 +1,4 @@
-# Pegasis
+# Pegasys
 
 A web application that simplifies installing Windows applications by generating custom batch installers.
 
