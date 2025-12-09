@@ -191,64 +191,46 @@ a {
   user-select: none;
 }
 
-.manual-section {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1.5rem;
-  margin-bottom: 4rem;
-  border-left: 4px solid #f59e0b;
-}
-
 .manual-description {
   color: var(--text-muted);
   font-size: 0.9rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
 }
 
-.manual-apps-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1rem;
+.manual-category {
+  border-left: 4px solid #f59e0b;
 }
 
-.manual-app-card {
+.manual-app-item {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 1rem;
-  background: var(--background);
-  border: 1px solid var(--border);
+  gap: 0.75rem;
+  padding: 0.5rem;
   border-radius: var(--radius);
-  transition: var(--transition);
   cursor: pointer;
+  transition: var(--transition);
   text-decoration: none;
   color: inherit;
+  position: relative;
 }
 
-.manual-app-card:hover {
-  border-color: #f59e0b;
+.manual-app-item:hover {
   background: var(--surface-hover);
-  transform: translateY(-2px);
 }
 
-.manual-app-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.manual-app-name {
-  font-size: 0.95rem;
-  color: var(--foreground);
-  font-weight: 500;
-}
-
-.manual-app-action {
-  font-size: 0.85rem;
+.manual-arrow {
+  margin-left: auto;
   color: #f59e0b;
-  font-weight: 500;
+  font-weight: bold;
+  font-size: 1.1rem;
+  opacity: 0.7;
+  transition: var(--transition);
+}
+
+.manual-app-item:hover .manual-arrow {
+  opacity: 1;
+  transform: translateX(4px);
 }
 
 .download-bar {

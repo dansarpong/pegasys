@@ -131,33 +131,38 @@ export default function Home() {
       {manualApps.length > 0 && (
         <>
           <div className="section-header">Manual Downloads</div>
-          <div className="manual-section">
-            <p className="manual-description">
-              These apps require manual download from their official websites.
-            </p>
-            <div className="manual-apps-grid">
-              {manualApps.map((app) => (
-                <a
-                  key={app.id}
-                  href={app.manualUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="manual-app-card"
-                >
-                  {app.website && (
-                    <img
-                      src={`https://www.google.com/s2/favicons?domain=${app.website}&sz=32`}
-                      alt=""
-                      className="app-icon"
-                    />
-                  )}
-                  <div className="manual-app-info">
-                    <span className="manual-app-name">{app.name}</span>
-                    <span className="manual-app-action">Download →</span>
-                  </div>
-                </a>
-              ))}
-            </div>
+          <p className="manual-description">
+            These apps require manual download from their official websites.
+          </p>
+          <div className="category-grid">
+            {Array.from(new Set(manualApps.map(app => app.category))).map((category) => (
+              <div key={category} className="category-card manual-category">
+                <div className="category-title">{category}</div>
+                <div className="app-list">
+                  {manualApps
+                    .filter((app) => app.category === category)
+                    .map((app) => (
+                      <a
+                        key={app.id}
+                        href={app.manualUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="manual-app-item"
+                      >
+                        {app.website && (
+                          <img
+                            src={`https://www.google.com/s2/favicons?domain=${app.website}&sz=32`}
+                            alt=""
+                            className="app-icon"
+                          />
+                        )}
+                        <span className="app-label">{app.name}</span>
+                        <span className="manual-arrow">→</span>
+                      </a>
+                    ))}
+                </div>
+              </div>
+            ))}
           </div>
         </>
       )}
