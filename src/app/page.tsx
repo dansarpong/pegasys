@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useLayoutEffect } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import Image from 'next/image';
 import { categories, getWingetApps, getManualDownloadApps } from '@/data/apps';
 
