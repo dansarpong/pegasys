@@ -18,8 +18,8 @@ export default function Home() {
   };
 
   const selectAll = () => {
-    const allAppIds = apps.map(app => app.id);
-    setSelectedApps(new Set(allAppIds));
+    const wingetAppIds = getWingetApps().map(app => app.id);
+    setSelectedApps(new Set(wingetAppIds));
   };
 
   const unselectAll = () => {
@@ -27,7 +27,8 @@ export default function Home() {
   };
 
   const isAllSelected = () => {
-    return selectedApps.size === apps.length;
+    const wingetAppIds = getWingetApps().map(app => app.id);
+    return selectedApps.size === wingetAppIds.length && wingetAppIds.length > 0;
   };
 
   const handleDownload = async () => {
@@ -75,6 +76,13 @@ export default function Home() {
   const wingetApps = getWingetApps();
   const manualApps = getManualDownloadApps();
 
+  // Sort categories by number of apps (descending) for inverted staircase effect
+  const sortedCategories = [...categories].sort((a, b) => {
+    const countA = wingetApps.filter(app => app.category === a).length;
+    const countB = wingetApps.filter(app => app.category === b).length;
+    return countB - countA;
+  });
+
   return (
     <main className="container">
       <div className="header">
@@ -88,10 +96,9 @@ export default function Home() {
         </button>
       </div>
 
-      {/* Automated Install Section */}
-      <div className="section-header">Automated Install</div>
+      {/* Category Grid - sorted by app count for staircase effect */}
       <div className="category-grid">
-        {categories.map((category) => (
+        {sortedCategories.map((category) => (
           <div key={category} className="category-card">
             <div className="category-title">{category}</div>
             <div className="app-list">
@@ -126,17 +133,17 @@ export default function Home() {
           <div className="section-header">Manual Downloads</div>
           <div className="manual-section">
             <p className="manual-description">
-              These apps require manual download. The installer will provide links and instructions.
+              These apps require manual download from their official websites.
             </p>
-            <div className="app-list">
+            <div className="manual-apps-grid">
               {manualApps.map((app) => (
-                <label key={app.id} className="app-item">
-                  <input
-                    type="checkbox"
-                    className="app-checkbox"
-                    checked={selectedApps.has(app.id)}
-                    onChange={() => toggleApp(app.id)}
-                  />
+                <a
+                  key={app.id}
+                  href={app.manualUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="manual-app-card"
+                >
                   {app.website && (
                     <img
                       src={`https://www.google.com/s2/favicons?domain=${app.website}&sz=32`}
@@ -144,8 +151,11 @@ export default function Home() {
                       className="app-icon"
                     />
                   )}
-                  <span className="app-label">{app.name}</span>
-                </label>
+                  <div className="manual-app-info">
+                    <span className="manual-app-name">{app.name}</span>
+                    <span className="manual-app-action">Download →</span>
+                  </div>
+                </a>
               ))}
             </div>
           </div>

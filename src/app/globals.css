@@ -86,11 +86,21 @@ a {
 
 
 .category-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
+  column-count: 3;
+  column-gap: 2rem;
   margin-bottom: 4rem;
-  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .category-grid {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 640px) {
+  .category-grid {
+    column-count: 1;
+  }
 }
 
 .category-card {
@@ -99,7 +109,10 @@ a {
   border-radius: var(--radius);
   padding: 1.5rem;
   transition: var(--transition);
-  height: fit-content;
+  break-inside: avoid;
+  margin-bottom: 2rem;
+  display: inline-block;
+  width: 100%;
 }
 
 .category-card:hover {
@@ -190,10 +203,53 @@ a {
 .manual-description {
   color: var(--text-muted);
   font-size: 0.9rem;
-  margin-bottom: 1rem;
-  font-style: italic;
+  margin-bottom: 1.5rem;
 }
 
+.manual-apps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.manual-app-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: var(--transition);
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.manual-app-card:hover {
+  border-color: #f59e0b;
+  background: var(--surface-hover);
+  transform: translateY(-2px);
+}
+
+.manual-app-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.manual-app-name {
+  font-size: 0.95rem;
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.manual-app-action {
+  font-size: 0.85rem;
+  color: #f59e0b;
+  font-weight: 500;
+}
 
 .download-bar {
   position: fixed;
