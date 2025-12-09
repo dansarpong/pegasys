@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { apps, categories, getWingetApps, getManualDownloadApps } from '@/data/apps';
+import { useState, useEffect, useLayoutEffect } from 'react';
+import Image from 'next/image';
+import { categories, getWingetApps, getManualDownloadApps } from '@/data/apps';
 
 export default function Home() {
   const [selectedApps, setSelectedApps] = useState<Set<string>>(new Set());
@@ -9,19 +10,14 @@ export default function Home() {
   const [showInfoModal, setShowInfoModal] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
 
-  // Initialize theme from localStorage or system preference
-  useEffect(() => {
+  // Initialize theme from localStorage or system preference (before paint)
+  useLayoutEffect(() => {
     const savedTheme = localStorage.getItem('theme') as 'dark' | 'light' | null;
-    if (savedTheme) {
-      setTheme(savedTheme);
-      document.documentElement.setAttribute('data-theme', savedTheme);
-    } else {
-      // Check system preference
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const initialTheme = prefersDark ? 'dark' : 'light';
-      setTheme(initialTheme);
-      document.documentElement.setAttribute('data-theme', initialTheme);
-    }
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+
+    setTheme(initialTheme);
+    document.documentElement.setAttribute('data-theme', initialTheme);
   }, []);
 
   const toggleTheme = () => {
@@ -123,7 +119,7 @@ export default function Home() {
           rel="noopener noreferrer"
           className="pizza-btn"
         >
-        🍕
+          🍕
         </a>
       </div>
 
@@ -137,9 +133,9 @@ export default function Home() {
         <div className="instructions-title">📋 How to Use</div>
         <ol className="instructions-list">
           <li>Browse the categories below and select your desired apps by checking the boxes</li>
-          <li>Click "Get Your Installer" to download a custom .bat installer file</li>
+          <li>Click &ldquo;Get Your Installer&rdquo; to download a custom .bat installer file</li>
           <li>Run the downloaded installer on your Windows machine (requires winget)</li>
-          <li>For apps in the "Manual Downloads" section, click to visit their download sites</li>
+          <li>For apps in the &ldquo;Manual Downloads&rdquo; section, click to visit their download sites</li>
         </ol>
       </div>
 
@@ -169,10 +165,13 @@ export default function Home() {
                       onChange={() => toggleApp(app.id)}
                     />
                     {app.website && (
-                      <img
+                      <Image
                         src={`https://www.google.com/s2/favicons?domain=${app.website}&sz=32`}
                         alt=""
+                        width={32}
+                        height={32}
                         className="app-icon"
+                        unoptimized
                       />
                     )}
                     <span className="app-label">{app.name}</span>
@@ -206,10 +205,13 @@ export default function Home() {
                         className="manual-app-item"
                       >
                         {app.website && (
-                          <img
+                          <Image
                             src={`https://www.google.com/s2/favicons?domain=${app.website}&sz=32`}
                             alt=""
+                            width={32}
+                            height={32}
                             className="app-icon"
+                            unoptimized
                           />
                         )}
                         <span className="app-label">{app.name}</span>

@@ -27,6 +27,24 @@
   --text-muted: #737373;
 }
 
+/* Default to dark theme */
+html {
+  background: #0a0a0a;
+}
+
+html:not([data-theme]) {
+  background: #0a0a0a;
+}
+
+html:not([data-theme]),
+html[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
