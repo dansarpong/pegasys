@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { apps, categories } from '@/data/apps';
+import { apps, categories, getWingetApps, getManualDownloadApps } from '@/data/apps';
 
 export default function Home() {
   const [selectedApps, setSelectedApps] = useState<Set<string>>(new Set());
@@ -15,6 +15,19 @@ export default function Home() {
       newSelected.add(appId);
     }
     setSelectedApps(newSelected);
+  };
+
+  const selectAll = () => {
+    const allAppIds = apps.map(app => app.id);
+    setSelectedApps(new Set(allAppIds));
+  };
+
+  const unselectAll = () => {
+    setSelectedApps(new Set());
+  };
+
+  const isAllSelected = () => {
+    return selectedApps.size === apps.length;
   };
 
   const handleDownload = async () => {
@@ -59,19 +72,30 @@ export default function Home() {
     }
   };
 
+  const wingetApps = getWingetApps();
+  const manualApps = getManualDownloadApps();
+
   return (
     <main className="container">
       <div className="header">
-        <h1>Pegasis</h1>
+        <h1>Pegasys</h1>
         <p>Select your apps and get a custom installer.</p>
+        <button
+          className="select-all-btn"
+          onClick={isAllSelected() ? unselectAll : selectAll}
+        >
+          {isAllSelected() ? 'Unselect All' : 'Select All'}
+        </button>
       </div>
 
+      {/* Automated Install Section */}
+      <div className="section-header">Automated Install</div>
       <div className="category-grid">
         {categories.map((category) => (
           <div key={category} className="category-card">
             <div className="category-title">{category}</div>
             <div className="app-list">
-              {apps
+              {wingetApps
                 .filter((app) => app.category === category)
                 .map((app) => (
                   <label key={app.id} className="app-item">
@@ -81,6 +105,13 @@ export default function Home() {
                       checked={selectedApps.has(app.id)}
                       onChange={() => toggleApp(app.id)}
                     />
+                    {app.website && (
+                      <img
+                        src={`https://www.google.com/s2/favicons?domain=${app.website}&sz=32`}
+                        alt=""
+                        className="app-icon"
+                      />
+                    )}
                     <span className="app-label">{app.name}</span>
                   </label>
                 ))}
@@ -88,6 +119,38 @@ export default function Home() {
           </div>
         ))}
       </div>
+
+      {/* Manual Downloads Section */}
+      {manualApps.length > 0 && (
+        <>
+          <div className="section-header">Manual Downloads</div>
+          <div className="manual-section">
+            <p className="manual-description">
+              These apps require manual download. The installer will provide links and instructions.
+            </p>
+            <div className="app-list">
+              {manualApps.map((app) => (
+                <label key={app.id} className="app-item">
+                  <input
+                    type="checkbox"
+                    className="app-checkbox"
+                    checked={selectedApps.has(app.id)}
+                    onChange={() => toggleApp(app.id)}
+                  />
+                  {app.website && (
+                    <img
+                      src={`https://www.google.com/s2/favicons?domain=${app.website}&sz=32`}
+                      alt=""
+                      className="app-icon"
+                    />
+                  )}
+                  <span className="app-label">{app.name}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
 
       <div className={`download-bar ${selectedApps.size > 0 ? 'visible' : ''}`}>
         <div className="download-content">
