@@ -54,7 +54,36 @@ a {
 .header p {
   color: var(--text-muted);
   font-size: 1.2rem;
+  margin-bottom: 1rem;
 }
+
+.select-all-btn {
+  background: var(--surface);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  padding: 0.6rem 1.5rem;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-top: 0.5rem;
+}
+
+.select-all-btn:hover {
+  border-color: var(--primary);
+  background: var(--surface-hover);
+}
+
+.section-header {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--foreground);
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border);
+}
+
 
 .category-grid {
   display: grid;
@@ -136,11 +165,35 @@ a {
   font-weight: bold;
 }
 
+.app-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
 .app-label {
   font-size: 0.95rem;
   color: var(--foreground);
   user-select: none;
 }
+
+.manual-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-bottom: 4rem;
+  border-left: 4px solid #f59e0b;
+}
+
+.manual-description {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
 
 .download-bar {
   position: fixed;
