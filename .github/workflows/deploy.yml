@@ -27,7 +27,7 @@ jobs:
         run: npm ci
 
       - name: Build with OpenNext
-        run: npx --yes @opennextjs/cloudflare
+        run: npx --yes @opennextjs/cloudflare build
 
       - name: Create Cloudflare Pages Project
         uses: cloudflare/wrangler-action@v3
