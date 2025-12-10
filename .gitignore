@@ -60,5 +60,11 @@ Thumbs.db
 .LSOverride
 ._*
 
+
+# Cloudflare
+.dev.vars
+.wrangler/
+worker-site/
+
 # Agent
 .agent/

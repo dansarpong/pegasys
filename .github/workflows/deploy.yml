@@ -29,17 +29,10 @@ jobs:
       - name: Build with OpenNext
         run: npx --yes @opennextjs/cloudflare build
 
-      - name: Create Cloudflare Pages Project
+      - name: Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages project create pegasys --production-branch main
-        continue-on-error: true
+          command: deploy
 
-      - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy .open-next/worker --project-name=pegasys
